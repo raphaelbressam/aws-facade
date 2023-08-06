@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>false</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <PackageId>AWSFacade</PackageId>
+    <Version>1.0.0</Version>
+    <icon>https://github.com/raphaelbressam/aws-facade/media/icon.png</icon>
+    <License>MIT</License>
+    <Authors>Raphael Bressam</Authors>
+    <Company>raphaelbressam</Company>
+    <PackageDescription>Notifications made easy</PackageDescription>
+    <Description>Notifications made easy</Description>
+    <RepositoryUrl>https://github.com/raphaelbressam/aws-facade</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/raphaelbressam/aws-facade</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageTags>Domain;DDD;AWS;SQS;AWSFacade</PackageTags>
+    <ReleaseNotes>Visit our GitHub before installing.</ReleaseNotes>
+    <Title>AWSFacade</Title>
+    <Summary>AWSFacade is a facde of AWSSDK.</Summary>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\media\icon.png" Pack="true" PackagePath="\" />
+	  <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>
