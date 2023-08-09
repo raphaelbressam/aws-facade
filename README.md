@@ -29,7 +29,7 @@ dotnet add package AWSFacade
 ```
 
 # How to use
-## Add Dependency Injection
+## SQS
 ### Basic
 ```csharp
 
@@ -97,5 +97,21 @@ public class Customer
         _salesSqs = sqsFacadeFactory.Create("SQS_SALES");
     }
 }
+
+```
+## SecretsManager
+```csharp
+
+using AWSFacade.SecretsManager.Contracts;
+using AWSFacade.SecretsManager.Extensions;
+
+services.AddSecretsManagerCache();
+
+```
+### Usage example
+```csharp
+
+var secretsCache = serviceProvider.GetService<ISecretsCache>();
+string secretValue = secretsCache!.GetSecretValueAsync("YOUR_KEY");
 
 ```

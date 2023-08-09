@@ -6,7 +6,7 @@
 		<Nullable>enable</Nullable>
 
 		<PackageId>AWSFacade</PackageId>
-		<Version>1.0.1</Version>
+		<Version>1.0.2</Version>
 		<icon>https://github.com/raphaelbressam/aws-facade/media/icon.png</icon>
 		<License>MIT</License>
 		<Authors>Raphael Bressam</Authors>
@@ -31,7 +31,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="AWSSDK.Core" Version="3.7.200.13" />
+		<PackageReference Include="AWSSDK.SecretsManager" Version="3.7.200.13" />
 		<PackageReference Include="AWSSDK.SQS" Version="3.7.200.14" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
 	</ItemGroup>
 

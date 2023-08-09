@@ -4,7 +4,7 @@ using System;
 
 namespace AWSFacade.SQS.Extensions
 {
-    public static class ServiceCollectionExtension
+    public static partial class ServiceCollectionExtension
     {
         public static IServiceCollection AddSqsFacade(this IServiceCollection services, Action<SqsOptions> setupAction)
         {
