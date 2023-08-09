@@ -56,6 +56,12 @@ services.AddSqsFacade("SQS_CUSTOMER", config =>
     config.QueueUrl = "YOUR_QUEUE_URL";
     config.RegionEndpoint = RegionEndpoint.SAEast1;
 });
+services.AddSqsFacade("SQS_SALES", config =>
+{
+    config.MessageGroupId = "YOUR_GROUP_ID";
+    config.QueueUrl = "YOUR_QUEUE_URL";
+    config.RegionEndpoint = RegionEndpoint.SAEast1;
+});
 
 ```
 ### Usage example A
@@ -83,10 +89,12 @@ public class Customer
 
 public class Customer
 {
-    private readonly ISqsFacade _sqsFacade;
+    private readonly ISqsFacade _customerSqs;
+    private readonly ISqsFacade _salesSqs;
     public Customer(ISqsFacadeFactory sqsFacadeFactory)
     {
-        _sqsFacade = sqsFacadeFactory.Create("SQS_CUSTOMER");
+        _customerSqs = sqsFacadeFactory.Create("SQS_CUSTOMER");
+        _salesSqs = sqsFacadeFactory.Create("SQS_SALES");
     }
 }
 
