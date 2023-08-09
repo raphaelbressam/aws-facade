@@ -8,11 +8,11 @@ AWSFacade is a face of AWSSDK.
 
 
 ### Dependencies
-.NET 6.0
+.NET Standard 2.1
 
 You can check supported frameworks here:
 
-https://learn.microsoft.com/pt-br/dotnet/api/?view=net-6.0
+https://learn.microsoft.com/pt-br/dotnet/standard/net-standard?tabs=net-standard-2-1
 
 ### Instalation
 This package is available through Nuget Packages: https://www.nuget.org/packages/AWSFacade
@@ -28,10 +28,66 @@ Install-Package AWSFacade
 dotnet add package AWSFacade
 ```
 
-## How to use
+### How to use
+## Add Dependency Injection
+# Basic
 ```csharp
 
-string jsonString = "{ \"name\":\"product a\" }";
-AWSFacade.PublishMessage(jsonString);
+using AWSFacade.SQS.Contracts;
+using AWSFacade.SQS.Extensions;
+
+services.AddSqsFacade(config =>
+{
+    config.MessageGroupId = "YOUR_GROUP_ID";
+    config.QueueUrl = "YOUR_QUEUE_URL";
+    config.RegionEndpoint = RegionEndpoint.SAEast1;
+});
+
+```
+# With Identification Name
+```csharp
+
+using AWSFacade.SQS.Contracts;
+using AWSFacade.SQS.Extensions;
+
+services.AddSqsFacade("SQS_CUSTOMER", config =>
+{
+    config.MessageGroupId = "YOUR_GROUP_ID";
+    config.QueueUrl = "YOUR_QUEUE_URL";
+    config.RegionEndpoint = RegionEndpoint.SAEast1;
+});
+
+```
+## Usage example A
+```csharp
+
+var sqsFacadeFactory = serviceProvider.GetService<ISqsFacadeFactory>();
+var sqsFacade = sqsFacadeFactory!.Create();
+
+```
+## Usage example B
+```csharp
+
+public class Customer
+{
+    private readonly ISqsFacade _sqsFacade;
+    public Customer(ISqsFacadeFactory sqsFacadeFactory)
+    {
+        _sqsFacade = sqsFacadeFactory.Create();
+    }
+}
+
+```
+## Usage example C
+```csharp
+
+public class Customer
+{
+    private readonly ISqsFacade _sqsFacade;
+    public Customer(ISqsFacadeFactory sqsFacadeFactory)
+    {
+        _sqsFacade = sqsFacadeFactory.Create("SQS_CUSTOMER");
+    }
+}
 
 ```

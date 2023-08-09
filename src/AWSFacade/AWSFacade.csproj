@@ -1,32 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>false</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<ImplicitUsings>false</ImplicitUsings>
+		<Nullable>enable</Nullable>
 
-    <PackageId>AWSFacade</PackageId>
-    <Version>1.0.0</Version>
-    <icon>https://github.com/raphaelbressam/aws-facade/media/icon.png</icon>
-    <License>MIT</License>
-    <Authors>Raphael Bressam</Authors>
-    <Company>raphaelbressam</Company>
-    <PackageDescription>Notifications made easy</PackageDescription>
-    <Description>Notifications made easy</Description>
-    <RepositoryUrl>https://github.com/raphaelbressam/aws-facade</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/raphaelbressam/aws-facade</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageTags>Domain;DDD;AWS;SQS;AWSFacade</PackageTags>
-    <ReleaseNotes>Visit our GitHub before installing.</ReleaseNotes>
-    <Title>AWSFacade</Title>
-    <Summary>AWSFacade is a facde of AWSSDK.</Summary>
-	<PackageReadmeFile>README.md</PackageReadmeFile>
-  </PropertyGroup>
+		<PackageId>AWSFacade</PackageId>
+		<Version>1.0.1</Version>
+		<icon>https://github.com/raphaelbressam/aws-facade/media/icon.png</icon>
+		<License>MIT</License>
+		<Authors>Raphael Bressam</Authors>
+		<Company>raphaelbressam</Company>
+		<PackageDescription>Tools to speed up development</PackageDescription>
+		<Description>Tools to speed up development</Description>
+		<RepositoryUrl>https://github.com/raphaelbressam/aws-facade</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/raphaelbressam/aws-facade</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageTags>Domain;DDD;AWS;SQS;AWSFacade</PackageTags>
+		<ReleaseNotes>Visit our GitHub before installing.</ReleaseNotes>
+		<Title>AWSFacade</Title>
+		<Summary>Tools to speed up development.</Summary>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="..\..\media\icon.png" Pack="true" PackagePath="\" />
-	  <None Include="..\..\README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\media\icon.png" Pack="true" PackagePath="\" />
+		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AWSSDK.Core" Version="3.7.200.13" />
+		<PackageReference Include="AWSSDK.SQS" Version="3.7.200.14" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
+	</ItemGroup>
 
 </Project>
