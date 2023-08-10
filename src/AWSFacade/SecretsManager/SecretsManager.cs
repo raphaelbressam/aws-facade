@@ -19,7 +19,7 @@ namespace AWSFacade.SecretsManager
 
         public string? GetSecretValue(string key)
         {
-            throw new NotImplementedException();
+            return GetSecretValueAsync(key).GetAwaiter().GetResult();
         }
 
         public async Task<string?> GetSecretValueAsync(string key)

@@ -56,13 +56,4 @@ namespace AWSFacadeTest
             sqsFacade.Name.Should().BeEmpty();
         }
     }
-
-    public class Customer
-    {
-        private readonly ISqsFacade _sqsFacade;
-        public Customer(ISqsFacadeFactory sqsFacadeFactory)
-        {
-            _sqsFacade = sqsFacadeFactory.Create();
-        }
-    }
 }

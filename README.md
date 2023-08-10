@@ -105,7 +105,7 @@ public class Customer
 using AWSFacade.SecretsManager.Contracts;
 using AWSFacade.SecretsManager.Extensions;
 
-services.AddSecretsManagerCache();
+services.AddSecretsManagerCache((sp) => new AmazonSecretsManagerClient(new AmazonSecretsManagerConfig { RegionEndpoint = RegionEndpoint.SAEast1 }));
 
 ```
 ### Usage example
