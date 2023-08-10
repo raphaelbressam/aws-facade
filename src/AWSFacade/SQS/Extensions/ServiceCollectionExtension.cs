@@ -15,12 +15,15 @@ namespace AWSFacade.SQS.Extensions
         {
             if (services is null) throw new ArgumentNullException(nameof(services));
             if (setupAction is null) throw new ArgumentNullException(nameof(setupAction));
-            if (name is null) throw new ArgumentNullException(nameof(name));
+            if (name is null) throw new ArgumentNullException(nameof(name), "Sqs name is required!");
 
             services.AddOptions();
 
             var options = new SqsOptions();
             setupAction(options);
+
+            if (options is null) throw new ArgumentNullException(nameof(options), "Config is required!");
+            if (string.IsNullOrEmpty(options.QueueUrl)) throw new ArgumentNullException(nameof(options.QueueUrl), "QueueUrl is required!");
 
             services.AddSingleton<ISqsFacade>((s) => new SqsFacade(name, options));
             services.AddSingleton<ISqsFacadeFactory, SqsFacadeFactory>();
