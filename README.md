@@ -115,3 +115,32 @@ var secretsCache = serviceProvider.GetService<ISecretsCache>();
 string secretValue = secretsCache!.GetSecretValueAsync("YOUR_KEY");
 
 ```
+## Elasticache Redis
+```csharp
+
+using AWSFacade.ElastiCache.Redis.Extensions;
+using AWSFacade.SecretsManager.Extensions;
+
+services.AddLogging();
+services.AddSecretsManagerCache((sp) => ....);
+services.AddElasticacheRedis(config =>
+{
+    config.AbortConnect = false;
+    config.Endpoing = "localhost:6379";
+    config.InstanceName = "test";
+    config.SecretKey = "test";
+    config.Ssl = true;
+});
+
+```
+### Usage example
+```csharp
+
+var cache = serviceProvider.GetRequiredService<IDistributedCache>();
+
+//SET KEY
+await cache.SetStringAsync("test", "test");
+//GET KEY
+var result = await cache.GetStringAsync("test");
+
+```
