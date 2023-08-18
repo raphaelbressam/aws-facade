@@ -3,6 +3,7 @@ using Amazon.SQS.Model;
 using AWSFacade.SQS.Contracts;
 using Microsoft.Extensions.Options;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AWSFacade.SQS
@@ -13,6 +14,8 @@ namespace AWSFacade.SQS
         public string Name { get; } = string.Empty;
         public string QueueUrl { get; }
         public string? MessageGroupId { get; }
+
+        private string? LastReceiptHandle;
 
         public SqsFacade(string name, IOptions<SqsOptions> options)
         {
@@ -42,5 +45,52 @@ namespace AWSFacade.SQS
             var response = await _amazonSQSClient.SendMessageAsync(sendMessageRequest);
             return response;
         }
+
+        public async Task<Message> ReceiveMessageAsync()
+        {
+            if (!string.IsNullOrWhiteSpace(MessageGroupId))
+                await DeleteLastMessageAsync();
+
+            var receiveMessageRequest = new ReceiveMessageRequest(QueueUrl) { MaxNumberOfMessages = 1 };
+            var receiveMessageResponse = await _amazonSQSClient.ReceiveMessageAsync(receiveMessageRequest);
+
+            if (receiveMessageResponse.HttpStatusCode != System.Net.HttpStatusCode.OK)
+                throw new AmazonSQSException($"Receive message from SQS:\"{QueueUrl}\" was failed!");
+
+            var message = receiveMessageResponse.Messages.FirstOrDefault();
+
+            CleanLastReceiptHandle();
+            if (message != null)
+                SetLastReceiptHandle(message.ReceiptHandle);
+
+            return receiveMessageResponse.Messages.FirstOrDefault();
+        }
+
+        public async Task<bool> DeleteMessageAsync(string receiptHandle)
+        {
+            var deleteMessageRequest = new DeleteMessageRequest(QueueUrl, receiptHandle);
+            var deleteMessageResponse = await _amazonSQSClient.DeleteMessageAsync(deleteMessageRequest);
+
+            return deleteMessageResponse.HttpStatusCode == System.Net.HttpStatusCode.OK;
+        }
+
+        public async Task<bool> DeleteLastMessageAsync()
+        {
+            var deleteMessageRequest = new DeleteMessageRequest(QueueUrl, LastReceiptHandle);
+            var deleteMessageResponse = await _amazonSQSClient.DeleteMessageAsync(deleteMessageRequest);
+
+            if (deleteMessageResponse.HttpStatusCode == System.Net.HttpStatusCode.OK)
+            {
+                CleanLastReceiptHandle();
+                return true;
+            }
+
+            return false;
+        }
+
+        private void CleanLastReceiptHandle()
+            => LastReceiptHandle = null;
+        private void SetLastReceiptHandle(string value)
+            => LastReceiptHandle = value;
     }
 }
