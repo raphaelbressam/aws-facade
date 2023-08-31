@@ -10,6 +10,7 @@ namespace AWSFacade.SQS.Contracts
         public string? MessageGroupId { get; }
 
         Task<SendMessageResponse> PublishMessageAsync(string message);
+        Task<SendMessageResponse> PublishMessageAsync(string message, string messageGroupId);
         Task<Message> ReceiveMessageAsync();
         Task<bool> DeleteMessageAsync(string receiptHandle);
         Task<bool> DeleteLastMessageAsync();

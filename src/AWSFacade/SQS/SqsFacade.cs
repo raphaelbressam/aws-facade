@@ -31,6 +31,12 @@ namespace AWSFacade.SQS
 
         public async Task<SendMessageResponse> PublishMessageAsync(string message)
         {
+            var response = await PublishMessageAsync(message, MessageGroupId ?? "");
+            return response;
+        }
+
+        public async Task<SendMessageResponse> PublishMessageAsync(string message, string messageGroupId)
+        {
             if (string.IsNullOrWhiteSpace(message)) throw new ArgumentNullException(nameof(message));
 
             var sendMessageRequest = new SendMessageRequest
@@ -39,8 +45,8 @@ namespace AWSFacade.SQS
                 MessageBody = message
             };
 
-            if (!string.IsNullOrWhiteSpace(MessageGroupId))
-                sendMessageRequest.MessageGroupId = MessageGroupId;
+            if (!string.IsNullOrWhiteSpace(messageGroupId))
+                sendMessageRequest.MessageGroupId = messageGroupId;
 
             var response = await _amazonSQSClient.SendMessageAsync(sendMessageRequest);
             return response;
