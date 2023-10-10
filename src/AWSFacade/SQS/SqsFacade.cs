@@ -14,10 +14,11 @@ namespace AWSFacade.SQS
         public string Name { get; } = string.Empty;
         public string QueueUrl { get; }
         public string? MessageGroupId { get; }
+        public string? MessageDeduplicationId { get; }
 
         private string? LastReceiptHandle;
 
-        public SqsFacade(string name, IOptions<SqsOptions> options)
+        public SqsFacade(string name, IOptions<SqsOptions> options, AmazonSQSClient? amazonSQSClient = null)
         {
             if (options is null) throw new ArgumentNullException(nameof(options));
             if (string.IsNullOrWhiteSpace(options.Value.QueueUrl)) throw new ArgumentNullException(nameof(options.Value.QueueUrl));
@@ -25,8 +26,9 @@ namespace AWSFacade.SQS
             Name = name;
             QueueUrl = options.Value.QueueUrl;
             MessageGroupId = options.Value.MessageGroupId;
+            MessageDeduplicationId = options.Value.MessageDeduplicationId;
 
-            _amazonSQSClient = new AmazonSQSClient(options.Value.RegionEndpoint);
+            _amazonSQSClient = amazonSQSClient != null ? amazonSQSClient : new AmazonSQSClient(options.Value.RegionEndpoint);
         }
 
         public async Task<SendMessageResponse> PublishMessageAsync(string message)
@@ -47,6 +49,9 @@ namespace AWSFacade.SQS
 
             if (!string.IsNullOrWhiteSpace(messageGroupId))
                 sendMessageRequest.MessageGroupId = messageGroupId;
+
+            if (!string.IsNullOrWhiteSpace(MessageDeduplicationId))
+                sendMessageRequest.MessageDeduplicationId = MessageDeduplicationId;
 
             var response = await _amazonSQSClient.SendMessageAsync(sendMessageRequest);
             return response;
