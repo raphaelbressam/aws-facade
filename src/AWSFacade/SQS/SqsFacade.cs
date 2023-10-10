@@ -14,7 +14,6 @@ namespace AWSFacade.SQS
         public string Name { get; } = string.Empty;
         public string QueueUrl { get; }
         public string? MessageGroupId { get; }
-        public string? MessageDeduplicationId { get; }
 
         private string? LastReceiptHandle;
 
@@ -26,18 +25,17 @@ namespace AWSFacade.SQS
             Name = name;
             QueueUrl = options.Value.QueueUrl;
             MessageGroupId = options.Value.MessageGroupId;
-            MessageDeduplicationId = options.Value.MessageDeduplicationId;
 
             _amazonSQSClient = amazonSQSClient != null ? amazonSQSClient : new AmazonSQSClient(options.Value.RegionEndpoint);
         }
 
-        public async Task<SendMessageResponse> PublishMessageAsync(string message)
+        public async Task<SendMessageResponse> PublishMessageAsync(string message, string? messageDeduplicationId = null)
         {
-            var response = await PublishMessageAsync(message, MessageGroupId ?? "");
+            var response = await PublishMessageAsync(message, MessageGroupId ?? "", messageDeduplicationId);
             return response;
         }
 
-        public async Task<SendMessageResponse> PublishMessageAsync(string message, string messageGroupId)
+        public async Task<SendMessageResponse> PublishMessageAsync(string message, string messageGroupId, string? messageDeduplicationId = null)
         {
             if (string.IsNullOrWhiteSpace(message)) throw new ArgumentNullException(nameof(message));
 
@@ -50,8 +48,8 @@ namespace AWSFacade.SQS
             if (!string.IsNullOrWhiteSpace(messageGroupId))
                 sendMessageRequest.MessageGroupId = messageGroupId;
 
-            if (!string.IsNullOrWhiteSpace(MessageDeduplicationId))
-                sendMessageRequest.MessageDeduplicationId = MessageDeduplicationId;
+            if (!string.IsNullOrWhiteSpace(messageDeduplicationId))
+                sendMessageRequest.MessageDeduplicationId = messageDeduplicationId;
 
             var response = await _amazonSQSClient.SendMessageAsync(sendMessageRequest);
             return response;
